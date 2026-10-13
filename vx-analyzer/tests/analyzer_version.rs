@@ -67,11 +67,6 @@ fn version_prints_the_workspace_version_and_exits() {
         concat!("vx-analyzer ", env!("CARGO_PKG_VERSION")),
         "unexpected --version output"
     );
-    // The shared workspace version, so this cannot drift from `vxc`'s.
-    assert!(
-        printed.ends_with(env!("CARGO_PKG_VERSION")),
-        "version drifted from the workspace's: {printed:?}"
-    );
 }
 
 #[test]
@@ -98,7 +93,7 @@ fn the_hidden_stdio_flag_is_accepted() {
         !stderr.contains("unexpected argument") && !stderr.contains("--stdio"),
         "the hidden flag was rejected: {stderr:?}"
     );
-    let _ = status;
+    assert!(status.success(), "exit {status}: stderr was {stderr:?}");
 }
 
 #[test]
